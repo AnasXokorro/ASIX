@@ -34,6 +34,13 @@ ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin
 echo "Reiniciando Apache para aplicar los cambios..."
 systemctl restart apache2
 
+echo "Creando usuario MySQL genérico..."
+mysql -u root -e "CREATE USER 'admin'@'%' IDENTIFIED BY '1234';"
+mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' WITH GRANT OPTION;"
+mysql -u root -e "FLUSH PRIVILEGES;"
+
+echo "Usuario MySQL 'admin' creado con contraseña '1234'."
+
 echo "Configurando permisos de firewall (si es necesario)..."
 ufw allow in "Apache Full"
 
@@ -41,6 +48,6 @@ echo "LAMP stack instalado con éxito. Detalles:"
 echo "----------------------------------------"
 echo "Apache: http://localhost"
 echo "phpMyAdmin: http://localhost/phpmyadmin"
-echo "MySQL: Ejecute 'mysql -u root -p' para acceder."
+echo "MySQL: Ejecute 'mysql -u admin -p' para acceder (contraseña: 1234)."
 echo "----------------------------------------"
 echo "¡Instalación completada!"
